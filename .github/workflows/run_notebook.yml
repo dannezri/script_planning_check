@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: 📥 Cloner le repo
-        uses: actions/checkout@v4  # Toujours utiliser la dernière version stable
+        uses: actions/checkout@v4  # Récupère le code du repo
 
       - name: 📂 Lister les fichiers avant exécution
         run: ls -R  # Vérifier la présence des fichiers dans le repo
@@ -27,20 +27,31 @@ jobs:
       - name: 📂 Vérifier le répertoire de travail
         run: echo "📂 Répertoire actuel"
 
+      - name: 🛠️ Créer le dossier de sortie
+        run: mkdir -p outputs  # Assure que le dossier existe avant d'écrire les fichiers
+
       - name: 🚀 Exécuter le notebook
         run: jupyter nbconvert --execute planning.ipynb --to notebook --output executed_script.ipynb
 
-      - name: 📂 Lister les fichiers après exécution
-        run: ls -R  # Vérifier la présence des fichiers générés
+      - name: 📂 Vérifier les fichiers générés après exécution
+        run: ls -R outputs/ || echo "⚠️ Aucun fichier trouvé dans outputs/"
 
       - name: 📂 Sauvegarder le fichier JSON généré
-        uses: actions/upload-artifact@v4  # Mise à jour vers la v4
+        if: success()
+        uses: actions/upload-artifact@v4
         with:
           name: json-output
           path: outputs/combined.json  # Assurez-vous que le script sauvegarde ici
 
+      - name: 📂 Sauvegarder le fichier des erreurs généré
+        if: always()  # Sauvegarde même si le script échoue
+        uses: actions/upload-artifact@v4
+        with:
+          name: errors-json
+          path: outputs/errors.json
+
       - name: 📂 Sauvegarder le notebook exécuté
-        uses: actions/upload-artifact@v4  # Mise à jour vers la v4
+        uses: actions/upload-artifact@v4
         with:
           name: executed-notebook
           path: executed_script.ipynb
