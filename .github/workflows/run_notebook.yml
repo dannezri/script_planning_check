@@ -25,7 +25,7 @@ jobs:
         run: pip install jupyter nbconvert requests pandas  # Ajoute tes librairies ici
 
       - name: 📂 Vérifier le répertoire de travail
-        run: echo "📂 Répertoire actuel : $(pwd)"
+        run: echo "📂 Répertoire actuel"
 
       - name: 🚀 Exécuter le notebook
         run: jupyter nbconvert --execute planning.ipynb --to notebook --output executed_script.ipynb
