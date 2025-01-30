@@ -1,25 +1,30 @@
-name: Run Colab Notebook
-
-on:
-  schedule:
-    - cron: "0 * * * *"  # Exécute toutes les heures (UTC)
-  workflow_dispatch:  # Permet un lancement manuel
-
 jobs:
-  execute_notebook:
+  execute:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: 📥 Cloner le repo
+        uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: 📂 Lister les fichiers pour debug
+        run: ls -R
+
+      - name: 🔧 Installer Python et Jupyter
         uses: actions/setup-python@v3
         with:
           python-version: "3.9"
 
-      - name: Install Jupyter
-        run: pip install jupyter nbconvert
+      - name: 📦 Installer les dépendances
+        run: pip install jupyter nbconvert requests  # Ajoute requests si nécessaire
 
-      - name: Execute Notebook
-        run: jupyter nbconvert --to notebook --execute planning.ipynb
+      - name: 🚀 Exécuter le notebook
+        run: jupyter nbconvert --execute planning.ipynb --to notebook
+
+      - name: 📂 Vérifier les fichiers après exécution
+        run: ls -R  # Vérifie si `combined.json` est bien créé
+
+      - name: ⬆️ Sauvegarder les fichiers générés
+        uses: actions/upload-artifact@v3
+        with:
+          name: combined-json
+          path: outputs/combined.json  # Chemin où tu as stocké le fichier JSON
