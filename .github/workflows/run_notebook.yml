@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: 📥 Cloner le repo
-        uses: actions/checkout@v3
+        uses: actions/upload-artifact@v4
 
       - name: 📂 Lister les fichiers avant exécution
         run: ls -R  # Vérifier la présence des fichiers dans le repo
