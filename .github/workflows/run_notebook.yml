@@ -55,12 +55,3 @@ jobs:
         with:
           name: executed-notebook
           path: executed_script.ipynb
-      - name: 📂 Installer rclone
-        run: |
-          sudo apt update
-          sudo apt install -y rclone
-          mkdir -p ~/.config/rclone
-          echo "$RCLONE_CONFIG" > ~/.config/rclone/rclone.conf
-
-      - name: 📂 Envoyer les résultats vers Google Drive
-        run: rclone copy outputs/ GDrive:ZapierResults/
