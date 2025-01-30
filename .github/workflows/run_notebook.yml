@@ -11,13 +11,13 @@ jobs:
 
     steps:
       - name: 📥 Cloner le repo
-        uses: actions/upload-artifact@v4
+        uses: actions/checkout@v4  # Toujours utiliser la dernière version stable
 
       - name: 📂 Lister les fichiers avant exécution
         run: ls -R  # Vérifier la présence des fichiers dans le repo
 
       - name: 🔧 Installer Python et Jupyter
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
 
@@ -28,19 +28,19 @@ jobs:
         run: echo "📂 Répertoire actuel"
 
       - name: 🚀 Exécuter le notebook
-        run: jupyter nbconvert --execute planning.ipynb --to notebook --output executed_script.ipynb
+        run: jupyter nbconvert --execute script.ipynb --to notebook --output executed_script.ipynb
 
       - name: 📂 Lister les fichiers après exécution
         run: ls -R  # Vérifier la présence des fichiers générés
 
       - name: 📂 Sauvegarder le fichier JSON généré
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Mise à jour vers la v4
         with:
           name: json-output
           path: outputs/combined.json  # Assurez-vous que le script sauvegarde ici
 
       - name: 📂 Sauvegarder le notebook exécuté
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # Mise à jour vers la v4
         with:
           name: executed-notebook
           path: executed_script.ipynb
