@@ -22,4 +22,4 @@ jobs:
         run: pip install jupyter nbconvert
 
       - name: Execute Notebook
-        run: jupyter nbconvert --to notebook --execute script.ipynb
+        run: jupyter nbconvert --to notebook --execute planning.ipynb
