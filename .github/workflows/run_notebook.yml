@@ -1,0 +1,25 @@
+name: Run Colab Notebook
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Exécute toutes les heures (UTC)
+  workflow_dispatch:  # Permet un lancement manuel
+
+jobs:
+  execute_notebook:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+
+      - name: Install Jupyter
+        run: pip install jupyter nbconvert
+
+      - name: Execute Notebook
+        run: jupyter nbconvert --to notebook --execute script.ipynb
