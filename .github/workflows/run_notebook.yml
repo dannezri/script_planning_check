@@ -28,7 +28,7 @@ jobs:
         run: echo "📂 Répertoire actuel"
 
       - name: 🚀 Exécuter le notebook
-        run: jupyter nbconvert --execute script.ipynb --to notebook --output executed_script.ipynb
+        run: jupyter nbconvert --execute planning.ipynb --to notebook --output executed_script.ipynb
 
       - name: 📂 Lister les fichiers après exécution
         run: ls -R  # Vérifier la présence des fichiers générés
