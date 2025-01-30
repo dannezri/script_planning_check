@@ -1,3 +1,10 @@
+name: Run Notebook
+
+on:
+  schedule:
+    - cron: "0 * * * *"  # Exécute chaque heure (UTC)
+  workflow_dispatch:  # Permet un lancement manuel via GitHub Actions
+
 jobs:
   execute:
     runs-on: ubuntu-latest
@@ -6,25 +13,34 @@ jobs:
       - name: 📥 Cloner le repo
         uses: actions/checkout@v3
 
-      - name: 📂 Lister les fichiers pour debug
-        run: ls -R
+      - name: 📂 Lister les fichiers avant exécution
+        run: ls -R  # Vérifier la présence des fichiers dans le repo
 
       - name: 🔧 Installer Python et Jupyter
         uses: actions/setup-python@v3
         with:
           python-version: "3.9"
 
-      - name: 📦 Installer les dépendances
-        run: pip install jupyter nbconvert requests  # Ajoute requests si nécessaire
+      - name: 📦 Installer les dépendances nécessaires
+        run: pip install jupyter nbconvert requests pandas  # Ajoute tes librairies ici
+
+      - name: 📂 Vérifier le répertoire de travail
+        run: echo "📂 Répertoire actuel : $(pwd)"
 
       - name: 🚀 Exécuter le notebook
-        run: jupyter nbconvert --execute planning.ipynb --to notebook
+        run: jupyter nbconvert --execute planning.ipynb --to notebook --output executed_script.ipynb
 
-      - name: 📂 Vérifier les fichiers après exécution
-        run: ls -R  # Vérifie si `combined.json` est bien créé
+      - name: 📂 Lister les fichiers après exécution
+        run: ls -R  # Vérifier la présence des fichiers générés
 
-      - name: ⬆️ Sauvegarder les fichiers générés
+      - name: 📂 Sauvegarder le fichier JSON généré
         uses: actions/upload-artifact@v3
         with:
-          name: combined-json
-          path: outputs/combined.json  # Chemin où tu as stocké le fichier JSON
+          name: json-output
+          path: outputs/combined.json  # Assurez-vous que le script sauvegarde ici
+
+      - name: 📂 Sauvegarder le notebook exécuté
+        uses: actions/upload-artifact@v3
+        with:
+          name: executed-notebook
+          path: executed_script.ipynb
