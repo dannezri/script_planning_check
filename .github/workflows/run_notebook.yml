@@ -2,7 +2,7 @@ name: Run Notebook
 
 on:
   schedule:
-    - cron: "0 * * * *"  # Exécute chaque heure (UTC)
+    - cron: "0 6 * * 1-5"  # Exécute à 06:00 UTC (7h00 CET) du lundi au vendredi
   workflow_dispatch:  # Permet un lancement manuel via GitHub Actions
 
 jobs:
